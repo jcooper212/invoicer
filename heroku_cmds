@@ -1,0 +1,13 @@
+heroku login
+  heroku access:add cooper@alum.mit.edu -a invoicer
+  heroku apps
+  heroku buildpacks:set heroku/python
+  heroku config
+  heroku config:set $(cat ../.env | sed 's/#.*//g' | xargs)\n
+  heroku config:set OPEN_AI_ORG=org-nbg6iY0OeKkE86Li5r7eSMkL -a=invoicer
+  heroku config:set OPEN_AI_ORG=org-nbg6iY0OeKkE86Li5r7eSMkL -app=invoicer
+  heroku create invoicer
+  heroku git:remote -a rayze
+  heroku login
+  heroku run bash -a rayze\n
+  heroku stack:set heroku-20 -a rayze
