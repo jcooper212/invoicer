@@ -11,5 +11,7 @@ heroku login
   heroku run bash -a rayze\n
   heroku stack:set heroku-20 -a rayze
   heroku buildpacks:set heroku/python
+ heroku plugins:install heroku-builds
+ heroku builds:cache:purge
 
 ###### run open_ai_heroku for envssss config
