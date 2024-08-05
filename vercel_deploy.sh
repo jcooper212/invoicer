@@ -1,6 +1,8 @@
-cp ../requirements.txt .
-cp ../../openai_env.vercel ./.env
-cp ../main_techops.py ./app/main.py
-cp ../models/models.py ./app/models/models.py
-cp ../models/schemas.py ./app/models/schemas.py
+cp ../recruitBot/requirements.txt .
+cp ../recruitBot/runtime.txt .
+cp ../recruitBot/main_techops.py main.py
+cp ../recruitBot/models/models.py ./models/models.py
+cp ../recruitBot/models/schemas.py ./models/schemas.py
+cp ../recruitBot/content/invoice_template.html ./content   
+cp ../recruitBot/content/rayze_logo.jpg ./content
 
