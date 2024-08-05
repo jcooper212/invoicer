@@ -7,6 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError, NoResultFound
 from sqlalchemy.future import select
 import jwt
 import hashlib
+import pkg_resources
 #from pydantic import BaseModel
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
@@ -22,6 +23,9 @@ from models.schemas import CandidateCreate, ClientCreate, TransactionCreate, Cas
 load_dotenv()
 openai.api_key = os.getenv("OPEN_AI_KEY")
 openai.organization = os.getenv("OPEN_AI_ORG")
+RAYZE_HOST = os.getenv('RAYZE_HOST')
+RAYZE_LOCALHOST = os.getenv('RAYZE_LOCALHOST')
+
 
 # Content Path
 PATH_TO_BLOG = Path('.')
@@ -740,4 +744,7 @@ def create_html_invoice(inv_id: int, invoice: ClientInvoice, db: Session = Depen
 if __name__ == "__main__":
     import uvicorn
     #uvicorn.run(app, host="127.0.0.1", port=8800)
-    uvicorn.run(app)
+    run_port = int(os.getenv("PORT", 8000))  # Default to 8000 if PORT is not set
+    run_host = RAYZE_HOST
+    #run_host = RAYZE_LOCALHOST
+    uvicorn.run(app, host=run_host, port=run_port)
