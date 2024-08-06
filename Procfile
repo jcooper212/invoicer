@@ -1,1 +1,1 @@
-web: uvicorn main:app --reload
+web: uvicorn main:app --reload --host $RAYZE_HOST --port $PORT
