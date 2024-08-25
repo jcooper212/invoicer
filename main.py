@@ -61,6 +61,55 @@ def list_installed_packages():
 def get_packages():
     return list_installed_packages()
 
+    # Authenticataion functions
+# Function to generate access token route
+@app.post("/generate_token")
+async def generate_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = authenticate_user(form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user[1]}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
+
+# Function to verify token route
+@app.post("/verify_token")
+async def verify_token(token: str = Depends(oauth2_scheme)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    user_name: str = payload.get("sub")
+    if user_name is None:
+        raise credentials_exception
+    #token_data = TokenData(username=user_name)
+    return token
+
+# Authenticataion functions
+@app.post("/authenticate")
+async def authenticate(form_data: OAuth2PasswordRequestForm = Depends()):
+    #print('adsf', form_data.username, form_data.password)
+    user = authenticate_user(form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user[1]}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
+
 # Function to hash passwords
 def get_password_hash(password: str):
     password_bytes = password.encode('utf-8')
@@ -177,7 +226,8 @@ def find_record_by_name(table_name, name):
         session.close()
 
 @app.get("/get_client_transactions/{recruiter_id}")
-def get_client_transactions(recruiter_id: int, db: Session = Depends(get_db)):
+def get_client_transactions(recruiter_id: int, db: Session = Depends(get_db),
+        user_name: str = Depends(verify_token)):
     try:
         transactions = (
         db.query(
@@ -263,7 +313,8 @@ def create_cashflow(cashflow: CashflowCreate, db: Session = Depends(get_db)):
 
 # Function to handle new invoice creation
 @app.post("/new_invoice", response_model=Invoice)
-def create_invoice(invoice: InvoiceCreate, db: Session = Depends(get_db)):
+def create_invoice(invoice: InvoiceCreate, db: Session = Depends(get_db),
+    user_name: str = Depends(verify_token)):
     invoice_data = DBInvoice(**invoice.dict())
     db.add(invoice_data)
     db.commit()
@@ -320,7 +371,8 @@ def list_invoices(db: Session = Depends(get_db)):
 
 # Function to list all client invoices
 @app.get("/list_client_invoices")
-def list_client_invoices(db: Session = Depends(get_db)):
+def list_client_invoices(db: Session = Depends(get_db),
+    user_name: str = Depends(verify_token)):
     client_invoices = db.query(DBClientInvoice).all()
     return client_invoices
 
@@ -541,7 +593,8 @@ def find_latest_invoice(client_id: str, db: Session = Depends(get_db)):
 
 # Submit client invoice
 @app.post("/submit_client_invoice")
-def submit_client_invoice(invoice: ClientInvoiceCreate, db: Session = Depends(get_db)):
+def submit_client_invoice(invoice: ClientInvoiceCreate, db: Session = Depends(get_db),
+    user_name: str = Depends(verify_token)):
     invoice_data = DBClientInvoice(**invoice.dict())    
     db.add(invoice_data)
     db.commit()
@@ -607,54 +660,6 @@ def generate_invoices(transaction_id: int, db: Session = Depends(get_db)):
 
     return {"invoices_written": invoices_written}
 
-# Authenticataion functions
-# Function to generate access token route
-@app.post("/generate_token")
-async def generate_token(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = authenticate_user(form_data.username, form_data.password)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user[1]}, expires_delta=access_token_expires
-    )
-    return {"access_token": access_token, "token_type": "bearer"}
-
-# Function to verify token route
-@app.post("/verify_token")
-async def verify_token(token: str = Depends(oauth2_scheme)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-    user_name: str = payload.get("sub")
-    if user_name is None:
-        raise credentials_exception
-    #token_data = TokenData(username=user_name)
-    return token
-
-# Authenticataion functions
-@app.post("/authenticate")
-async def authenticate(form_data: OAuth2PasswordRequestForm = Depends()):
-    #print('adsf', form_data.username, form_data.password)
-    user = authenticate_user(form_data.username, form_data.password)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user[1]}, expires_delta=access_token_expires
-    )
-    return {"access_token": access_token, "token_type": "bearer"}
 
  #Register
 @app.post("/register")
@@ -680,7 +685,8 @@ async def register(form_data: OAuth2PasswordRequestForm = Depends(), db: Session
 #         raise HTTPException(status_code=404, detail="Invoice not found")
 
 @app.get("/get_invoice/{id_str}")
-def get_invoice(id_str: str, db: Session = Depends(get_db)):
+def get_invoice(id_str: str, db: Session = Depends(get_db),
+    user_name: str = Depends(verify_token)):
     try:
         # Retrieve the filename from the database
         stmt = select(DBClientInvoice.inv_html).filter(DBClientInvoice.inv_hash == id_str)
