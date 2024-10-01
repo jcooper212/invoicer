@@ -246,6 +246,7 @@ def get_client_transactions(recruiter_id: int, db: Session = Depends(get_db),
             .join(DBClient, DBTransaction.client_id == DBClient.id)
             .join(DBCandidate, DBTransaction.candidate_id == DBCandidate.id)
             .filter(DBTransaction.recruiter_id == recruiter_id)
+            .filter(DBCandidate.status == 'Hired')
             .all()
         )
         #print(transactions)
@@ -691,18 +692,21 @@ def get_invoice(id_str: str, db: Session = Depends(get_db),
         # Retrieve the filename from the database
         stmt = select(DBClientInvoice.inv_html).filter(DBClientInvoice.inv_hash == id_str)
         result = db.execute(stmt)
-        filename = result.scalar_one()
+        inv_html = result.scalar_one()
+        return {"html": inv_html}
+
+        # filename = result.scalar_one()
         
-        # Construct the full file path
-        file_path = os.path.join("./", filename)
+        # # Construct the full file path
+        # file_path = os.path.join("./", filename)
         
-        # Read the file contents
-        if os.path.exists(file_path):
-            with open(file_path, 'r') as file:
-                file_contents = file.read()
-            return {"html": file_contents}
-        else:
-            raise HTTPException(status_code=404, detail="File not found")
+        # # Read the file contents
+        # if os.path.exists(file_path):
+        #     with open(file_path, 'r') as file:
+        #         file_contents = file.read()
+        #     return {"html": file_contents}
+        # else:
+        #     raise HTTPException(status_code=404, detail="File not found")
         
     except NoResultFound:
         raise HTTPException(status_code=404, detail="Invoice not found")
@@ -737,13 +741,14 @@ def create_html_invoice(inv_id: int, invoice: ClientInvoice, db: Session = Depen
     
     path_to_new_content = PATH_TO_CONTENT / new_title
     path_to_new_pdf = PATH_TO_CONTENT / new_title_pdf
-   # print(path_to_new_content, " : ",html_content)
+    print(path_to_new_content)
+       #print(path_to_new_content, " : ",html_content)
     # Save the HTML content to a file
     with open(path_to_new_content, 'w') as file:
         file.write(html_content)
     
     # Return the path to the HTML file
-    return str(path_to_new_content)
+    return str(html_content)
 
 
 # Run the FastAPI server
