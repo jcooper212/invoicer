@@ -374,7 +374,8 @@ def list_invoices(db: Session = Depends(get_db)):
 @app.get("/list_client_invoices")
 def list_client_invoices(db: Session = Depends(get_db),
     user_name: str = Depends(verify_token)):
-    client_invoices = db.query(DBClientInvoice).all()
+    ##client_invoices = db.query(DBClientInvoice).all()
+    client_invoices = db.query(DBClientInvoice).order_by(DBClientInvoice.inv_date.desc()).all()
     return client_invoices
 
 # Function to list all users
