@@ -752,11 +752,20 @@ def create_html_invoice(inv_id: int, invoice: ClientInvoice, db: Session = Depen
     return str(html_content)
 
 
-# Run the FastAPI server
+# # Run the FastAPI server
+# if __name__ == "__main__":
+#     import uvicorn
+#     run_port = int(os.getenv("PORT", 8000))  # Default to 8000 if PORT is not set
+#     run_host = RAYZE_HOST
+#     uvicorn.run(app, host=run_host, port=run_port)
+
 if __name__ == "__main__":
+    import asyncio
     import uvicorn
-    #uvicorn.run(app, host="127.0.0.1", port=8800)
     run_port = int(os.getenv("PORT", 8000))  # Default to 8000 if PORT is not set
     run_host = RAYZE_HOST
-    #run_host = RAYZE_LOCALHOST
-    uvicorn.run(app, host=run_host, port=run_port)
+    config = uvicorn.Config(app, host="127.0.0.1", port=8000)
+    server = uvicorn.Server(config)
+    
+    # Run in async context
+    asyncio.run(server.serve())
