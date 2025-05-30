@@ -2,22 +2,26 @@
 
     <div class="panel">
       <logo>
-      <img src="/images/rayze_invoice_logo.jpeg" alt="Logo" width="110" height="50">
-      </logo>
-      <h2>INVOICE</h2>
-      <h4> Bill To: client_name</h4>
-      <h2> </h2>
+    	<img src="/images/rayze_invoice_logo.jpeg" alt="Logo" width="110" height="50" onclick="window.print()">
+    <h2 onclick="window.print()">INVOICE</h2>
+    <h3 onclick="window.print()">Bill To: client_name</h3>
+    <h2></h2> 
+
       <table>
         <tr>
           <th>Invoice #</th>
           <th>Invoice Date</th>
           <th>Due Date</th>
+          <th>Start Date</th>
+          <th>End Date</th>
           <th>Amount Due</th>
         </tr>
         <tr>
           <td>invoice_num</td>
           <td>invoice_date</td>
           <td>due_date</td>
+	  <td>start_date</td>
+	  <td>end_date</td>
           <td> USD total_due</td>
         </tr>
       </table>

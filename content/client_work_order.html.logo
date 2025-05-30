@@ -1,0 +1,62 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+    <div class="panel">
+      <logo>
+    	<img src="/images/rayze_invoice_logo.jpeg" alt="Logo" width="110" height="50" onclick="window.print()">
+    <h4 onclick="window.save()">Rayze - Consulting Statement of Work (SOW)</h4>
+    <h5 onclick="window.save()">Between Rayze and client_name</h5>
+    <h5 onclick="window.print()">Dated: txn_date</h5>
+
+    <h2></h2> 
+  <body>
+  
+      <h2>1. Parties Involved</h2>
+      <p>This Statement of Work ("SOW") is executed between Rayze Consulting ("Rayze") and client_name on txn_date</p>
+  
+      <h2>2. Description of Assignment</h2>
+      <p>Rayze Consulting will provide consulting engineers to work within client_name teams. Rayze will assign a Rayze Consultant to collaborate with client_name, ensuring the successful delivery of engineering-related outcomes as defined by client_name project requirements.</p>
+  
+      <h2>3. Designated Contractor Resource</h2>
+      <p><strong>Name:</strong> candidate_name</p>
+      <p><strong>Role:</strong> Rayze Consultant</p>
+      <p>candidate_name will serve as the primary point of contact for client_name and will oversee the execution of all deliverables outlined in this SOW.</p>
+  
+      <h2>4. Assignment Start Date</h2>
+      <p>The project will commence on start_date.</p>
+  
+      <h2>5. Duration of the Project</h2>
+      <p>The engagement will run from start_date, to end_date, unless terminated earlier by mutual agreement or extended as per the terms agreed upon by both parties.</p>
+  
+      <h2>6. Hourly Bill Rate</h2>
+      <p><strong>Rate:</strong> client_rate USD per hour on a Corp-to-Corp (C2C) basis (all-inclusive).</p>
+  
+      <h2>7. Signatures</h2>
+  
+      <h3>Rayze Consulting</h3>
+      <p><strong>Print Name:</strong> Jamshed Cooper</p>
+      <p><strong>Title:</strong> Managing Partner</p>
+      <p><strong>Date:</strong> txn_date</p>
+      <p><strong>Signature:</strong></p>
+
+      <br><br><br>
+
+      <h3>client_name</h3>
+      <p><strong>Print Name:</strong> </p>
+      <p><strong>Title:</strong> </p>
+      <p><strong>Date:</strong> </p>
+      <p><strong>Signature:</strong> </p>
+
+      <br><br><br>
+  </body>
+    </div>
+    <div class="panel panel-2">
+      <h2>Please pay O3 Ventures llc directly via ACH.</h2>
+      <h3> O3 Ventures llc | Acct Num: 40011438155 | Routing number: 124303243 </h3>
+      <h5>Bank Address: American Express National Bank, PO Box 3038, Salt Lake City, UT 84130</h5>
+    </div>
+    <div class="panel panel-2">
+    <h7> O3 Ventures | 21 Sycamore Drive Roslyn NY | 516-800-2548 | jc@rayze.xyz </h7>
+    </div>
+  </div>

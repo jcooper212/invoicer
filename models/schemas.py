@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
+from pydantic import validator
 
 class CandidateBase(BaseModel):
     name: Optional[str] = None
@@ -12,6 +13,7 @@ class CandidateBase(BaseModel):
     feedback: Optional[str] = None
     cv_link: Optional[str] = None
     status: Optional[str] = None
+    client_id: Optional[int] = None
 
 class CandidateCreate(CandidateBase):
     name: str
@@ -213,3 +215,51 @@ class User(UserBase):
     class Config:
         orm_mode: True
 
+class OpenRolesBase(BaseModel):
+    client_id: int
+    role_desc: str
+    location: str
+    status: str
+    posted_on: datetime
+    remote: str
+    job_desc_link: str
+    test_doc: Optional[str] = None
+    jd_doc: Optional[str] = None
+
+
+class OpenRolesCreate(OpenRolesBase):
+    pass
+
+class OpenRolesUpdate(OpenRolesBase):
+    pass
+
+class OpenRoles(OpenRolesBase):
+    id: int
+
+    class Config:
+        orm_mode: True
+
+class SubmitCVRoleBase(BaseModel):
+    client_id: int
+    open_roles_id: int
+    candidates_id: int
+    status: str
+    submitted_on: datetime
+    remote: str
+    cv_link: str
+    test_answers: Optional[str] = None
+    test_score: Optional[str] = None
+    match_score: Optional[str] = None
+
+
+class SubmitCVRoleCreate(SubmitCVRoleBase):
+    pass
+
+class SubmitCVRoleUpdate(SubmitCVRoleBase):
+    pass
+
+class SubmitCVRole(SubmitCVRoleBase):
+    id: int
+
+    class Config:
+        orm_mode: True

@@ -1,22 +1,11 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, create_engine
+from sqlalchemy import Column, Integer, String, Float, DateTime, LargeBinary, ForeignKey, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
+from urllib.parse import quote_plus
 
 Base = declarative_base()
 
-class Candidate(Base):
-    __tablename__ = 'candidates'
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True)
-    role = Column(String)
-    location = Column(String)
-    candidate_cost = Column(Float)
-    phone = Column(String)
-    email = Column(String)
-    feedback = Column(String)
-    cv_link = Column(String)
-    status = Column(String)
 
 class Client(Base):
     __tablename__ = 'clients'
@@ -48,6 +37,50 @@ class Transaction(Base):
     total_referral_paid = Column(Float)
     last_payment_date = Column(DateTime)
 
+class Candidate(Base):
+    __tablename__ = 'candidates'
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True)
+    role = Column(String)
+    location = Column(String)
+    candidate_cost = Column(Float)
+    phone = Column(String)
+    email = Column(String)
+    feedback = Column(String(length=None))
+    cv_link = Column(String)
+    status = Column(String)
+    client_id = Column(Integer, ForeignKey('clients.id'))
+
+
+class SubmitCVRole(Base):
+    __tablename__ = 'submit_cv_role'
+    id = Column(Integer, primary_key=True, index=True)
+    client_id = Column(Integer, ForeignKey('clients.id'))
+    open_roles_id = Column(Integer)
+    candidates_id = Column(Integer, ForeignKey('candidates.id'))
+    status = Column(String)
+    submitted_on = Column(DateTime)
+    remote = Column(String)
+    cv_link = Column(String)
+    test_answers = Column(String)
+    test_score = Column(String)
+    match_score = Column(String)
+
+class OpenRoles(Base):
+    __tablename__ = 'open_roles'
+    id = Column(Integer, primary_key=True, index=True)
+    client_id = Column(Integer, ForeignKey('clients.id'))
+    role_desc = Column(String)
+    location = Column(String)
+    status = Column(String)
+    posted_on = Column(DateTime)
+    remote = Column(String)
+    job_desc_link = Column(String)
+    test_doc = Column(String)
+    jd_doc = Column(String)
+
+
+    
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, index=True)
@@ -100,7 +133,7 @@ class ClientInvoice(Base):
     inv_status = Column(String)
 
 # Database setup
-DATABASE_URL = os.getenv("DB_URL")
+DATABASE_URL = os.getenv("DB_URL") + "?sslmode=require&gssencmode=disable"
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
