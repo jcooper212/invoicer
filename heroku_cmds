@@ -3,8 +3,8 @@ heroku login
   heroku apps
   heroku config
   heroku config:set $(cat ../.env | sed 's/#.*//g' | xargs)\n
-  heroku config:set OPEN_AI_ORG=org-nbg6iY0OeKkE86Li5r7eSMkL -a=invoicer
-  heroku config:set OPEN_AI_ORG=org-nbg6iY0OeKkE86Li5r7eSMkL -app=invoicer
+  heroku config:set OPEN_AI_ORG=org-nbg6iY0OeKkE86Li5r7eSMkL -a=rayze
+  heroku config:set OPEN_AI_ORG=org-nbg6iY0OeKkE86Li5r7eSMkL -a=rayze
   heroku create invoicer
   heroku git:remote -a rayze
   heroku login
@@ -13,5 +13,5 @@ heroku login
   heroku buildpacks:set heroku/python
  heroku plugins:install heroku-builds
  heroku builds:cache:purge
-
+heroku logs -a rayze --tail
 ###### run open_ai_heroku for envssss config

@@ -1,0 +1,8 @@
+heroku config:set DB_URL='postgresql://postgres.tmqcprxidpcefgegkczt:$Jam$hed12345@aws-0-us-east-1.pooler.supabase.com:6543/postgres' -a rayze
+heroku config:set SUPABASE_URL='https://tmqcprxidpcefgegkczt.supabase.co' -a rayze
+heroku config:set SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRtcWNwcnhpZHBjZWZnZWdrY3p0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjIxOTg0NjcsImV4cCI6MjAzNzc3NDQ2N30.9BmFE33uA2VPjN9t2u9u5i-iwFclL0ugiHZ6khvf5Mk -a rayze
+heroku config:set SUPABASE_SECRET_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRtcWNwcnhpZHBjZWZnZWdrY3p0Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcyMjE5ODQ2NywiZXhwIjoyMDM3Nzc0NDY3fQ.9XsDWPvdysWNR9FGh6qIVKhNeqfASDUqJ0UvbiwUR5A -a rayze
+heroku config:set BUCKET_NAME='rayze-bucket' -a rayze
+heroku config:set BUCKET_ACCESS_KEY='97597e925111d7a870f0a0a0afe9acf8' -a rayze
+heroku config:set BUCKET_SECRET_KEY='bebe242cd08183febb746029a33ae41a3d28fd4ce128411d303a638f59313903' -a rayze
+heroku config:set ANTHROPIC_API_KEY=sk-ant-api03-7B_ObG9z2GQnH6yLtXvEIdWbBu5F0lUeUrGrUwMqu7POC4X0v6 -a rayze
